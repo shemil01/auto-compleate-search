@@ -31,7 +31,12 @@ export default function ProductDetail() {
     setTimeout(() => setCartMessage(""), 2000);
   };
 
-  if (loading) return <p className="text-center text-xl">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="w-12 h-12 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 text-black flex justify-center items-center">
@@ -40,8 +45,8 @@ export default function ProductDetail() {
           <Image
             src={product.image}
             alt={product.title}
-            width={300} 
-            height={300} 
+            width={300}
+            height={300}
             className="object-contain rounded-lg w-full h-full"
             priority
           />

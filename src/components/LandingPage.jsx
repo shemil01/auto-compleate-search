@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function LandingPage() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -17,6 +18,8 @@ export default function LandingPage() {
         setProducts(response.data);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false); 
       }
     };
     fetchProducts();
@@ -25,28 +28,32 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gray-100 p-6 text-black">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-3xl font-bold text-center mb-6">
-          E-Commerce Store
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-6">E-Commerce Store</h1>
 
         <SearchComponent />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {products.map((data) => (
-            <div key={data.id} className="bg-white p-4 shadow-lg rounded-lg">
-              <Image
-                src={data.image}
-                alt={data.title}
-                width={300}
-                height={160}
-                className="object-cover rounded-md mb-4 w-full h-40"
-              />
-              <Link href={`${data.id}`}>
-                <h2 className="text-xl font-semibold">{data.title}</h2>
-              </Link>
-              <p className="text-gray-600">${data.price}</p>
-            </div>
-          ))}
-        </div>
+
+        {loading ? (
+            <div className="flex justify-center items-center min-h-[50vh]">
+            <div className="w-12 h-12 border-4 border-blue-500 border-dotted rounded-full animate-spin"></div>
+          </div>        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {products.map((data) => (
+              <div key={data.id} className="bg-white p-4 shadow-lg rounded-lg">
+                <Image
+                  src={data.image}
+                  alt={data.title}
+                  width={300}
+                  height={160}
+                  className="object-cover rounded-md mb-4 w-full h-40"
+                />
+                <Link href={`/${data.id}`}>
+                  <h2 className="text-xl font-semibold">{data.title}</h2>
+                </Link>
+                <p className="text-gray-600">${data.price}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
